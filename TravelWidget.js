@@ -5,8 +5,8 @@ async function getTrafficData() {
   const location = await getLocation();
   const locationLatitude = location.latitude;
   const locationLongitude = location.longitude;
-  const destinationLatitude = 27.9782556;
-  const destinationLongitude = -82.3340117;
+  const destinationLatitude = Keychain.get('destinationLatitude');
+  const destinationLongitude = Keychain.get('destinationLongitude');
   const bingMapsKey = Keychain.get('travelWidget');
 
   // Construct the API request URL
@@ -20,7 +20,7 @@ async function getTrafficData() {
         throw new Error('Failed to retrieve data');
       }
 
-      // Extract travel duration and traffic time in minutes
+      // Extract travel duration and traffic in minutes
       const durationInMinutes = (response.resourceSets[0].resources[0].travelDuration / 60);
       const trafficInMinutes = (response.resourceSets[0].resources[0].travelDurationTraffic / 60);
 
