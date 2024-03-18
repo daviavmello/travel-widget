@@ -11,27 +11,25 @@ async function getTrafficData() {
 
   // Construct the API request URL
   const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${destinationLatitude},${destinationLongitude}&wayPoint.2=${locationLatitude},${locationLongitude}&du=mi&key=${bingMapsKey}`;
+  if (shouldRefreshWidget()) {
+    // Make the API request
+    try {
+      const request = new Request(url);
+      const response = await request.loadJSON();
+      if (!response) {
+        throw new Error('Failed to retrieve data');
+      }
 
-  // Make the API request
-  try {
-    const request = new Request(url);
-    const response = await request.loadJSON();
-    if (!response) {
-      throw new Error('Failed to retrieve data');
-    }
+      // Extract travel duration and traffic time in minutes
+      const durationInMinutes = (response.resourceSets[0].resources[0].travelDuration / 60);
+      const trafficInMinutes = (response.resourceSets[0].resources[0].travelDurationTraffic / 60);
 
-    // Extract travel distance and duration in minutes
-    const travelDurationTraffic = (response.resourceSets[0].resources[0].travelDurationTraffic);
-    const durationInMinutes = (response.resourceSets[0].resources[0].travelDuration / 60);
-    const trafficInMinutes = (response.resourceSets[0].resources[0].travelDurationTraffic / 60);
+      const hours = Math.floor(trafficInMinutes / 60);
+      const minutes = Math.round(trafficInMinutes % 60);
 
-    const hours = Math.floor(trafficInMinutes / 60);
-    const minutes = Math.round(trafficInMinutes % 60);
+      const trafficTime = Math.floor(trafficInMinutes - durationInMinutes);
+      const trafficStatus = getTrafficStatus(trafficTime);
 
-    const trafficTime = Math.floor(trafficInMinutes - durationInMinutes);
-    const trafficStatus = getTrafficStatus(trafficTime);
-
-    if (shouldRefreshWidget()) {
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
       trafficStack.cornerRadius = 12;
@@ -81,9 +79,11 @@ async function getTrafficData() {
       } else {
         widget.presentSmall();
       }
+    } catch (error) {
+      console.error("Error:", error);
     }
-  } catch (error) {
-    console.error("Error:", error);
+  } else {
+    console.log('Script has not ran. Check its scheduled time.')
   }
 }
 
