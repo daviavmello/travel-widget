@@ -17,7 +17,7 @@ async function getTrafficData() {
       const minutes = Math.round(trafficInMinutes % 60);
 
       const trafficTime = Math.floor(trafficInMinutes - durationInMinutes);
-      const trafficStatus = getTrafficStatus(trafficTime);
+      const trafficStatus = getTrafficStatus(trafficTime, hours, minutes);
 
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
@@ -121,7 +121,7 @@ function shouldRefreshWidget() {
 
   // Check if it's within the desired refresh times
   if ((hour >= 5 && hour < 8) || (hour >= 13 && hour < 19)) {
-    // Check if it's the start of the hour
+    // Run it every 10 minutes
     if (minute % 10 === 0) {
       return true;
     }
@@ -189,14 +189,21 @@ async function getURLRequest() {
   return url;
 }
 
-function getTrafficStatus(minutes) {
-  if (minutes >= 40) {
+function getTrafficStatus(trafficTime, hours, minutes) {
+  if (trafficTime >= 40) {
     return 'bad';
-  } else if (minutes >= 15) {
+  } else if (trafficTime >= 15) {
     return 'medium';
   } else {
+    triggerNotification(trafficTime, hours, minutes);
     return 'good';
   }
+}
+
+function triggerNotification(trafficTime, hours, minutes) {
+  let notification = new Notification();
+  notification.title = `Delay time is ${trafficTime} mins. Traffic is a bliss 🤩`;
+  notification.body = `Total time is ${hours}:${minutes}`
 }
 
 await getTrafficData();
