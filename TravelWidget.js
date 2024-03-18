@@ -34,6 +34,8 @@ async function getTrafficData() {
     if (shouldRefreshWidget()) {
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
+      trafficStack.cornerRadius = 12;
+      trafficStack.setPadding(8, 8, 8, 8);
       let totalTimeStack = widget.addStack();
       let totalTimeText = totalTimeStack.addText(`${hours}h${minutes}min`);
       totalTimeText.font = Font.lightSystemFont(28);
@@ -42,6 +44,7 @@ async function getTrafficData() {
         case 'bad':
           // trigger notification
           totalTimeText.textColor = Color.white();
+          trafficStack.backgroundColor = new Color('#F48477');
           trafficStack.addText('☠️');
           let badTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
           badTrafficText.font = Font.semiboldSystemFont(18);
@@ -50,6 +53,7 @@ async function getTrafficData() {
           break;
         case 'medium':
           totalTimeText.textColor = new Color('#202124');
+          trafficStack.backgroundColor = new Color('#FEEFBD');
           trafficStack.addText('⚠️');
           let mediumTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
           mediumTrafficText.font = Font.semiboldSystemFont(18);
@@ -58,6 +62,7 @@ async function getTrafficData() {
           break;
         default:
           totalTimeText.textColor = Color.white();
+          trafficStack.backgroundColor = new Color('#4EDF89');
           trafficStack.addText('✅');
           let goodTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
           goodTrafficText.font = Font.semiboldSystemFont(18);

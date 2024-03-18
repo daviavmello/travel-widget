@@ -14,9 +14,11 @@ TravelWidget is a JavaScript project that helps users track traffic time from po
 To use the TravelWidget project, follow these steps:
 
 1. Install the Scriptable app on your iOS device from the App Store.
-2. Download the TravelWidget script file (`TravelWidget.js`) from the GitHub repository.
-3. Open the Scriptable app and import the `TravelWidget.js` script.
-4. Add a new widget to your home screen and select the TravelWidget script.
+2. Download the TravelWidget script file (`SetKeychain.js`) from the GitHub repository.
+3. Open the Scriptable app and import the script `SetKeychain.js` script and give it an API key name and enter in its value when prompted.
+4. Download the TravelWidget script file (`TravelWidget.js`) from this GitHub repository.
+5. Open the Scriptable app and import the `TravelWidget.js` script.
+6. Add a new widget to your home screen and select the TravelWidget script.
 
 ## Usage
 
