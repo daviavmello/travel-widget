@@ -57,7 +57,7 @@ async function getTrafficData() {
           trafficTextColor: new Color('#202124'),
           lastRefreshedTextColor: new Color('#202124'),
         },
-        'default': {
+        'good': {
           textColor: Color.white(),
           backgroundColor: new Color('#0B7240'),
           widgetBackgroundColor: new Color('#0F9D58'),
@@ -67,9 +67,12 @@ async function getTrafficData() {
         }
       };
 
-      const statusStyle = trafficStatusStyles[trafficStatus] || trafficStatusStyles['default'];
+      const statusStyle = trafficStatusStyles[trafficStatus] || trafficStatusStyles['good'];
 
-      totalTimeText.textColor = statusStyle.textColor;
+      hoursText.textColor = statusStyle.textColor;
+      hText.textColor = statusStyle.textColor;
+      minutesText.textColor = statusStyle.textColor;
+      mText.textColor = statusStyle.textColor;
       trafficStack.backgroundColor = statusStyle.backgroundColor;
       widget.backgroundColor = statusStyle.widgetBackgroundColor;
 
