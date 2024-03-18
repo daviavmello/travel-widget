@@ -22,7 +22,7 @@ async function getTrafficData() {
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
       trafficStack.font = Font.systemFont(10);
-      trafficStack.cornerRadius = 12;
+      trafficStack.cornerRadius = 10;
       trafficStack.setPadding(6, 6, 6, 6);
 
       let totalTimeStack = widget.addStack();
