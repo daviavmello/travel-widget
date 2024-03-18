@@ -21,53 +21,62 @@ async function getTrafficData() {
 
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
-      trafficStack.cornerRadius = 12;
-      trafficStack.setPadding(8, 8, 8, 8);
+      trafficStack.font = Font.systemFont(10);
+      trafficStack.cornerRadius = 8;
+      trafficStack.setPadding(6, 6, 6, 6);
 
       let totalTimeStack = widget.addStack();
+      totalTimeStack.setPadding(16, 0, 36, 0);
       let totalTimeText = totalTimeStack.addText(`${hours}h${minutes}min`);
-      totalTimeText.font = Font.lightSystemFont(28);
+      totalTimeText.font = Font.lightSystemFont(36);
 
       let lastRefreshedStack = widget.addStack();
       let lastRefreshedText = lastRefreshedStack.addText(`Last updated: ${getCurrentTime()}`);
-      lastRefreshedText.font = Font.systemFont(8);
+      lastRefreshedText.font = Font.systemFont(10);
 
-      switch (trafficStatus) {
-        case 'bad':
-          totalTimeText.textColor = Color.white();
-          trafficStack.backgroundColor = new Color('#BA352A');
-          trafficStack.addText('☠️');
-          let badTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
-          badTrafficText.font = Font.semiboldSystemFont(12);
-          widget.backgroundColor = new Color('#E94335');
-          badTrafficText.textColor = Color.white();
-          lastRefreshedText.textColor = Color.white();
-          break;
-        case 'medium':
-          totalTimeText.textColor = new Color('#202124');
-          trafficStack.backgroundColor = new Color('#C99504');
-          trafficStack.addText('⚠️');
-          let mediumTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
-          mediumTrafficText.font = Font.semiboldSystemFont(12);
-          widget.backgroundColor = new Color('#FBBB05');
-          mediumTrafficText.textColor = new Color('#202124');
-          lastRefreshedText.textColor = new Color('#202124');
-          break;
-        default:
-          // trigger notification
-          totalTimeText.textColor = Color.white();
-          trafficStack.backgroundColor = new Color('#0C7D46');
-          trafficStack.addText('✅');
-          let goodTrafficText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
-          goodTrafficText.font = Font.semiboldSystemFont(12);
-          widget.backgroundColor =
-            new Color('#0F9D58');
-          goodTrafficText.textColor = Color.white();
-          lastRefreshedText.textColor = Color.white();
-      }
+      const trafficStatusStyles = {
+        'bad': {
+          textColor: Color.white(),
+          backgroundColor: new Color('#BA352A'),
+          widgetBackgroundColor: new Color('#E94335'),
+          emoji: '☠️',
+          trafficTextColor: Color.white(),
+          lastRefreshedTextColor: Color.white(),
+        },
+        'medium': {
+          textColor: new Color('#202124'),
+          backgroundColor: new Color('#C99504'),
+          widgetBackgroundColor: new Color('#FBBB05'),
+          emoji: '⚠️',
+          trafficTextColor: new Color('#202124'),
+          lastRefreshedTextColor: new Color('#202124'),
+        },
+        'default': {
+          textColor: Color.white(),
+          backgroundColor: new Color('#0C7D46'),
+          widgetBackgroundColor: new Color('#0F9D58'),
+          emoji: '✅',
+          trafficTextColor: Color.white(),
+          lastRefreshedTextColor: Color.white(),
+        }
+      };
+
+      const statusStyle = trafficStatusStyles[trafficStatus] || trafficStatusStyles['default'];
+
+      totalTimeText.textColor = statusStyle.textColor;
+      trafficStack.backgroundColor = statusStyle.backgroundColor;
+      widget.backgroundColor = statusStyle.widgetBackgroundColor;
+
+      let statusEmojiText = trafficStack.addText(statusStyle.emoji);
+      statusEmojiText.font = Font.semiboldSystemFont(14);
+
+      let trafficTimeText = trafficStack.addText(`${trafficTime} ${trafficTime === 0 ? 'min' : 'mins'}`);
+      trafficTimeText.font = Font.semiboldSystemFont(14);
+      trafficTimeText.textColor = statusStyle.trafficTextColor;
+
+      lastRefreshedText.textColor = statusStyle.lastRefreshedTextColor;
 
       trafficStack.spacing = 4;
-      widget.addSpacer(10);
 
       if (config.runsInWidget) {
         // The script is running in a widget, so we save and return the widget
@@ -167,9 +176,9 @@ async function getURLRequest() {
   // Construct the API request URL
   let url = '';
   if (distanceToOrigin > distanceToDestination) {
-    url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${locationLatitude},${locationLongitude}&wayPoint.2=${originLatitude},${originLongitude}&du=mi&key=${bingMapsKey}`;
+    url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${locationLatitude},${locationLongitude}&wayPoint.2=${originLatitude},${originLongitude}&du=mi&key=${bingMapsKey}&avoid=tolls`;
   } else {
-    url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${locationLatitude},${locationLongitude}&wayPoint.2=${destinationLatitude},${destinationLongitude}&du=mi&key=${bingMapsKey}`;
+    url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${locationLatitude},${locationLongitude}&wayPoint.2=${destinationLatitude},${destinationLongitude}&du=mi&key=${bingMapsKey}&avoid=tolls`;
   }
   return url;
 }

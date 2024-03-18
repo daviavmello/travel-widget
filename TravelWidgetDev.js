@@ -11,7 +11,7 @@ async function getTrafficData() {
   const bingMapsKey = process.env.BING_MAPS_KEY;
 
   // Construct the API request URL
-  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${latitude},${longitude}&wayPoint.2=${homeLatitude},${homeLongitude}&du=mi&key=${bingMapsKey}`;
+  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${latitude},${longitude}&wayPoint.2=${homeLatitude},${homeLongitude}&du=mi&key=${bingMapsKey}&avoid=tolls`;
 
   // Make the API request
   try {
