@@ -22,13 +22,19 @@ async function getTrafficData() {
       let widget = new ListWidget();
       let trafficStack = widget.addStack();
       trafficStack.font = Font.systemFont(10);
-      trafficStack.cornerRadius = 8;
+      trafficStack.cornerRadius = 12;
       trafficStack.setPadding(6, 6, 6, 6);
 
       let totalTimeStack = widget.addStack();
       totalTimeStack.setPadding(16, 0, 36, 0);
-      let totalTimeText = totalTimeStack.addText(`${hours}h${minutes}min`);
-      totalTimeText.font = Font.lightSystemFont(36);
+      let hoursText = totalTimeStack.addText(hours);
+      hoursText.font = Font.boldSystemFont(36);
+      let hText = totalTimeStack.addText('h')
+      hText.font = Font.lightSystemFont(36);
+      let minutesText = totalTimeStack.addText(minutes);
+      minutesText.font = Font.boldSystemFont(36);
+      let mText = totalTimeStack.addText('min')
+      mText.font = Font.lightSystemFont(36);
 
       let lastRefreshedStack = widget.addStack();
       let lastRefreshedText = lastRefreshedStack.addText(`Last updated: ${getCurrentTime()}`);
