@@ -1,17 +1,14 @@
 require('dotenv').config();
 
 async function getTrafficData() {
-  const getHours = minutes => Math.floor(minutes / 60);
-  const getMinutes = minutes => Math.round(minutes % 60);
-
-  const homeLatitude = 28.8033899;
-  const homeLongitude = -81.3509408;
-  const latitude = 27.9782556;
-  const longitude = -82.3340117;
+  const originLatitude = process.env.ORIGIN_LATITUDE;
+  const originLongitude = process.env.ORIGIN_LONGITUDE;
+  const latitude = process.env.DESTINATION_LATITUDE;
+  const longitude = process.env.DESTINATION_LONGITUDE;
   const bingMapsKey = process.env.BING_MAPS_KEY;
 
   // Construct the API request URL
-  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${latitude},${longitude}&wayPoint.2=${homeLatitude},${homeLongitude}&du=mi&key=${bingMapsKey}&avoid=tolls`;
+  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${latitude},${longitude}&wayPoint.2=${originLatitude},${originLongitude}&du=mi&key=${bingMapsKey}&avoid=tolls`;
 
   // Make the API request
   try {
@@ -29,8 +26,7 @@ async function getTrafficData() {
     const hours = Math.floor(trafficInMinutes / 60);
     const minutes = Math.round(trafficInMinutes % 60);
 
-    // console.log(`Travel Duration: ${hours}h${minutes}min`);
-    // console.log(`Traffic: ${getMinutes(trafficInMinutes) - getMinutes(durationInMinutes)} minutes`);
+    console.log(`Travel Duration: ${hours}h${minutes}min`);
     console.log(trafficInMinutes - durationInMinutes);
     console.log(trafficInMinutes, durationInMinutes);
   } catch (error) {
