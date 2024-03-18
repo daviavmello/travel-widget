@@ -32,12 +32,12 @@ async function getTrafficData() {
 
       let lastRefreshedStack = widget.addStack();
       let lastRefreshedText = lastRefreshedStack.addText(`Last updated: ${getCurrentTime()}`);
-      lastRefreshedText.font = Font.systemFont(10);
+      lastRefreshedText.font = Font.systemFont(12);
 
       const trafficStatusStyles = {
         'bad': {
           textColor: Color.white(),
-          backgroundColor: new Color('#BA352A'),
+          backgroundColor: new Color('#C52F22'),
           widgetBackgroundColor: new Color('#E94335'),
           emoji: '☠️',
           trafficTextColor: Color.white(),
@@ -45,7 +45,7 @@ async function getTrafficData() {
         },
         'medium': {
           textColor: new Color('#202124'),
-          backgroundColor: new Color('#C99504'),
+          backgroundColor: new Color('#F09E00'),
           widgetBackgroundColor: new Color('#FBBB05'),
           emoji: '⚠️',
           trafficTextColor: new Color('#202124'),
@@ -53,7 +53,7 @@ async function getTrafficData() {
         },
         'default': {
           textColor: Color.white(),
-          backgroundColor: new Color('#0C7D46'),
+          backgroundColor: new Color('#0B7240'),
           widgetBackgroundColor: new Color('#0F9D58'),
           emoji: '✅',
           trafficTextColor: Color.white(),
