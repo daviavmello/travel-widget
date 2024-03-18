@@ -5,12 +5,12 @@ async function getTrafficData() {
   const location = await getLocation();
   const locationLatitude = location.latitude;
   const locationLongitude = location.longitude;
-  const citiLatitude = 27.9782556;
-  const citiLongitude = -82.3340117;
+  const destinationLatitude = 27.9782556;
+  const destinationLongitude = -82.3340117;
   const bingMapsKey = Keychain.get('travelWidget');
 
   // Construct the API request URL
-  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${citiLatitude},${citiLongitude}&wayPoint.2=${locationLatitude},${locationLongitude}&du=mi&key=${bingMapsKey}`;
+  const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${destinationLatitude},${destinationLongitude}&wayPoint.2=${locationLatitude},${locationLongitude}&du=mi&key=${bingMapsKey}`;
 
   // Make the API request
   try {

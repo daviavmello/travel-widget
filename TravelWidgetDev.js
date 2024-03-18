@@ -1,6 +1,6 @@
-async function getTrafficData() {
-  console.log("Start");
+require('dotenv').config();
 
+async function getTrafficData() {
   const getHours = minutes => Math.floor(minutes / 60);
   const getMinutes = minutes => Math.round(minutes % 60);
 
@@ -8,6 +8,7 @@ async function getTrafficData() {
   const homeLongitude = -81.3509408;
   const latitude = 27.9782556;
   const longitude = -82.3340117;
+  const bingMapsKey = process.env.BING_MAPS_KEY;
 
   // Construct the API request URL
   const url = `https://dev.virtualearth.net/REST/v1/Routes/Driving?wayPoint.1=${latitude},${longitude}&wayPoint.2=${homeLatitude},${homeLongitude}&du=mi&key=${bingMapsKey}`;
