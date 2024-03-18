@@ -1,7 +1,4 @@
 async function getTrafficData() {
-  const getHours = minutes => Math.floor(minutes / 60);
-  const getMinutes = minutes => Math.round(minutes % 60);
-
   if (shouldRefreshWidget()) {
     // Make the API request
     try {
@@ -26,9 +23,14 @@ async function getTrafficData() {
       let trafficStack = widget.addStack();
       trafficStack.cornerRadius = 12;
       trafficStack.setPadding(8, 8, 8, 8);
+
       let totalTimeStack = widget.addStack();
       let totalTimeText = totalTimeStack.addText(`${hours}h${minutes}min`);
       totalTimeText.font = Font.lightSystemFont(28);
+
+      let lastRefreshedStack = widget.addStack();
+      let lastRefreshedText = lastRefreshedStack.addText(`Last updated: ${getCurrentTime()}`);
+      lastRefreshedText.font = Font.systemFont(8);
 
       switch (trafficStatus) {
         case 'bad':
@@ -39,6 +41,7 @@ async function getTrafficData() {
           badTrafficText.font = Font.semiboldSystemFont(12);
           widget.backgroundColor = new Color('#E94335');
           badTrafficText.textColor = Color.white();
+          lastRefreshedText.textColor = Color.white();
           break;
         case 'medium':
           totalTimeText.textColor = new Color('#202124');
@@ -48,6 +51,7 @@ async function getTrafficData() {
           mediumTrafficText.font = Font.semiboldSystemFont(12);
           widget.backgroundColor = new Color('#FBBB05');
           mediumTrafficText.textColor = new Color('#202124');
+          lastRefreshedText.textColor = new Color('#202124');
           break;
         default:
           // trigger notification
@@ -59,6 +63,7 @@ async function getTrafficData() {
           widget.backgroundColor =
             new Color('#0F9D58');
           goodTrafficText.textColor = Color.white();
+          lastRefreshedText.textColor = Color.white();
       }
 
       trafficStack.spacing = 4;
@@ -107,6 +112,22 @@ function shouldRefreshWidget() {
     }
   }
   return false;
+}
+
+function getCurrentTime() {
+  // Get the current date and time
+  const now = new Date();
+
+  // Extract the hour and minute
+  const hour = now.getHours();
+  const min = now.getMinutes();
+
+  // Format the hour and minute as strings, padding with a leading zero if necessary
+  const formattedHour = hour.toString().padStart(2, '0');
+  const formattedMin = min.toString().padStart(2, '0');
+
+  // Combine the hour and minute into the desired format
+  return `${formattedHour}:${formattedMin}`;
 }
 
 // Function to get distance between two coordinates in miles
